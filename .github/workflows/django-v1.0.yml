@@ -29,4 +29,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker Image
-        run: docker push aapurva/django-apps:portfolio-website:v1.0
+        run: docker push aapurva/django-apps:portfolio-website
