@@ -23,15 +23,15 @@ jobs:
 
       - name: Log in to Docker registry
         run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin https://hub.docker.com/repository/docker/aapurva/django-apps
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin https://hub.docker.com/u/aapurva
 
       - name: Pull Docker image
-        run: docker pull https://hub.docker.com/repository/docker/aapurva/django-apps:v1.0
+        run: docker pull https://hub.docker.com/u/aapurva/django-apps:v1.0
 
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@13.232.43.29 << EOF
             docker stop portfolio-website || true
             docker rm portfolio-website || true
-            docker run -d --name portfolio-website -p 80:8000 https://hub.docker.com/repository/docker/aapurva/django-apps:v1.0
+            docker run -d --name portfolio-website -p 80:8000 https://hub.docker.com/u/aapurva/django-apps:v1.0
           EOF
