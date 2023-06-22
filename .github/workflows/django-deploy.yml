@@ -1,0 +1,37 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install SSH client
+        run: sudo apt-get update && sudo apt-get -y install openssh-client
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Log in to Docker registry
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin https://hub.docker.com/repository/docker/aapurva/django-apps
+
+      - name: Pull Docker image
+        run: docker pull https://hub.docker.com/repository/docker/aapurva/django-apps:v1.0
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@13.232.43.29 << EOF
+            docker stop portfolio-website || true
+            docker rm portfolio-website || true
+            docker run -d --name portfolio-website -p 80:8000 https://hub.docker.com/repository/docker/aapurva/django-apps:v1.0
+          EOF
