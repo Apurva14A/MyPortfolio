@@ -32,7 +32,7 @@ jobs:
 
       - name: Deploy to EC2 Instance
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@EC2_INSTANCE_IP << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@35.154.188.31 << 'EOF'
             docker stop portfolio-website || true
             docker rm portfolio-website || true
             docker run -d --name portfolio-website -p 8000:8000 docker.io/aapurva/django-apps:v1.0
