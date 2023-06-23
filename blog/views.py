@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Blog
+from django.shortcuts import redirect
 from django.utils import timezone
 
 def all_blogs(request):
@@ -9,3 +10,6 @@ def all_blogs(request):
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     return render(request, 'blog/blog_detail.html', {'blog':blog})
+
+def blog_redirect(request):
+    return redirect('home')  # 'home' is the name of your home page URL pattern
