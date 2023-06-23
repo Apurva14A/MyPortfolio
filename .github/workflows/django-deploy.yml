@@ -33,8 +33,8 @@ jobs:
       - name: Deploy to EC2 Instance
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@13.232.51.236 << 'EOF'
-            docker stop portfolio-website || true
-            docker rm portfolio-website || true
+            docker stop portfolio_website || true
+            docker rm portfolio_website || true
             docker run -d --name portfolio_website -p 8000:8000 docker.io/aapurva/django-apps:v1.0 gunicorn --config gunicorn_config.py myPortfolio.wsgi:application
           EOF
 
