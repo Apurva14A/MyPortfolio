@@ -25,7 +25,7 @@ jobs:
         run: docker login docker.io -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Pull Docker image
-        run: docker pull docker.io/django-apps:v1.0
+        run: docker pull docker.io/aapurva/django-apps:v1.0
 
       - name: Set up SSH key
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
@@ -35,5 +35,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@EC2_INSTANCE_IP << 'EOF'
             docker stop portfolio-website || true
             docker rm portfolio-website || true
-            docker run -d --name portfolio-website -p 8000:8000 docker.io/django-apps:v1.0
+            docker run -d --name portfolio-website -p 8000:8000 docker.io/aapurva/django-apps:v1.0
           EOF
