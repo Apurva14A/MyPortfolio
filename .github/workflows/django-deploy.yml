@@ -35,5 +35,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@35.154.188.31 << 'EOF'
             docker stop portfolio-website || true
             docker rm portfolio-website || true
-            docker run -d --name portfolio-website -p 8000:8000 docker.io/aapurva/django-apps:v1.0
+            docker run -d --name portfolio_website -p 8000:8000 docker.io/aapurva/django-apps:v1.0
           EOF
