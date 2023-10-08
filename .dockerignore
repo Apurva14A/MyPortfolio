@@ -2,3 +2,10 @@
 .gitignore
 README*
 LICENSE*
+.github
+portfolio.png
+.dockerignore
+Dockerfile
+db.sqlite3
+media
+
