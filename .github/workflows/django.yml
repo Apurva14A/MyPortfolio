@@ -37,4 +37,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --statistics
    
     - name: Build 
-      run: python3 manage.py build
+      run: python3 -m build
