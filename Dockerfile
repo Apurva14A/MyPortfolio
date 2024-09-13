@@ -11,14 +11,31 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory in the container
 WORKDIR /app
 
+# Create a non root user 
+
+ARG UID=10001
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    appuser
+    
+
+# Download dependencies as a separate step to take advantage of Docker's caching.
+# Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
+# Leverage a bind mount to requirements.txt to avoid having to copy them into
+# into this layer.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    python -m pip install -r requirements.txt
+
+USER appuser
+
 # Copy the project code to the working directory
- COPY . /app
-
-# Copy the requirements file
-COPY requirements.txt .
-
-# Install project dependencies
-RUN pip install --no-cache-dir -r requirements.txt 
+ COPY . .
 
 # Expose the port on which the Django application will run
 EXPOSE 8000
